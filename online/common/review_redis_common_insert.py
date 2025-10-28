@@ -1,6 +1,5 @@
 import redis
-import json
-import review_redis_common_insert_dto # DTO import
+import online.common.review_redis_common_insert_dto as review_redis_common_insert_dto
 
 def init_redis(host, port, db):
    client = redis.StrictRedis(host=host, port=port, db=db, decode_responses=True)

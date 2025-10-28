@@ -1,7 +1,7 @@
 from time import sleep
 from datetime import datetime
-import review_redis_common_insert
-from review_redis_common_insert_dto import review_redis_common_insert_dto
+import online.common.review_redis_common_insert as review_redis_common_insert
+from online.common.review_redis_common_insert_dto import review_redis_common_insert_dto
 from google_play_scraper import app, reviews, Sort
 
 APP_ID = "world.mnetplus"  # 앱 패키지명

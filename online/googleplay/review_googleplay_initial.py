@@ -1,8 +1,8 @@
 from time import sleep
 from datetime import datetime
-import review_redis_common_insert
-from review_redis_common_insert_dto import review_redis_common_insert_dto
 from google_play_scraper import app, reviews, Sort
+import online.common.review_redis_common_insert as review_redis_common_insert
+from online.common.review_redis_common_insert_dto import review_redis_common_insert_dto
 
 max_pages=500
 page_size=200
