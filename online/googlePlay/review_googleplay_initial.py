@@ -1,7 +1,7 @@
 from time import sleep
 from datetime import datetime
-import review_redis_common_insert
-from review_redis_common_insert_dto import review_redis_common_insert_dto
+import online.common.review_redis_common_insert as review_redis_common_insert
+from online.common.review_redis_common_insert_dto import review_redis_common_insert_dto
 from google_play_scraper import app, reviews, Sort
 
 max_pages=500
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         if not items:
             break
         
-        #필요한 항목 -> review_redis_common_insert_dto에 mapping
+        # 필요한 항목 -> review_redis_common_insert_dto에 mapping
         # reviewId : 785f0b33-a54c-4501-8691-a1f8fe8ecae6
         # userName : 도경
         # content : 애초에 업뎃도 잘안되고 업뎃이랑 깔았다 다시깔아도 잘 안되네요ㅠㅠㅠ 콘텐츠는 많지만 광고가 더 많습니다ㅠㅠㅠ
