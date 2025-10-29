@@ -1,37 +1,33 @@
 from time import sleep
 from datetime import datetime
-import review_redis_common_insert
-from review_redis_common_insert_dto import review_redis_common_insert_dto
+import online.const as const
+import online.common.review_redis_common_flush as review_redis_common_flush
+import online.common.review_redis_common_insert as review_redis_common_insert
+from online.common.review_redis_common_insert_dto import review_redis_common_insert_dto
 from google_play_scraper import app, reviews, Sort
 
-max_pages=500
-page_size=200
-sleep_ms=300
-APP_ID = "world.mnetplus"  # 앱 패키지명
+DB = 0
 
 if __name__ == "__main__":
     
+    print(f"start flush db={DB}")
+    review_redis_common_flush.flush_db(DB)
+    print(f"flush success db={DB}")
+    
     token, total, out = None, 0, review_redis_common_insert_dto
-        
-    for _ in range(max_pages):
-        items, token = reviews(APP_ID, 
+            
+    for _ in range(const.MAX_PAGES):
+        items, token = reviews(const.MNT_APP_ID, 
                                lang="ko", 
                                country="kr",
                                sort=Sort.NEWEST, 
-                               count=page_size,
+                               count=const.REVIEW_CNT,
                                continuation_token=token)
         if not items:
             break
-        
-        #필요한 항목 -> review_redis_common_insert_dto에 mapping
-        # reviewId : 785f0b33-a54c-4501-8691-a1f8fe8ecae6
-        # userName : 도경
-        # content : 애초에 업뎃도 잘안되고 업뎃이랑 깔았다 다시깔아도 잘 안되네요ㅠㅠㅠ 콘텐츠는 많지만 광고가 더 많습니다ㅠㅠㅠ
-        # score : 1
-        # reviewCreatedVersion : 3.29.1
-        # at : datetime.datetime(2025, 10, 20, 21, 48, 55) <-이건 자르건 합치건 해야할듯...
-  
+      
         for item in items:
+            #✅forDebug
             print(item, "\n")
             
             review_data = review_redis_common_insert_dto(
@@ -50,10 +46,10 @@ if __name__ == "__main__":
             )
             
             # review_redis_common_insert 모듈로 insert
-            review_redis_common_insert.insert_review(review_data)
+            review_redis_common_insert.insert_review(review_data, DB)
             
         if not token:  # 다음 페이지 없으면 종료
             break
         
-        sleep(sleep_ms/2000.0)
+        sleep(300/1000.0)
     
